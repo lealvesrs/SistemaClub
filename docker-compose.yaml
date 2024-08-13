@@ -1,0 +1,50 @@
+networks:
+  mynet:
+    driver: bridge
+
+services:
+  webserver:
+    build: .
+    ports: 
+      - "80:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 300MB
+    links:
+      - banco:banco
+    networks:
+      mynet:
+  
+  banco:
+    build: ./sql/
+    ports: 
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: senha_da_nasa
+      MYSQL_DATABASE: lamp
+      MYSQL_USER: user_lamp
+      MYSQL_PASSWORD: lamp_pass
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 500MB
+    networks:
+      mynet:
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    links:
+      - banco:banco
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 200MB
+    networks:
+      mynet:
