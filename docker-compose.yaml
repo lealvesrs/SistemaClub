@@ -11,26 +11,26 @@ services:
       resources:
         limits:
           cpus: '1.0'
-          memory: 300MB
+          memory: 300M
     links:
-      - banco:banco
+      - db_club:db_club
     networks:
       mynet:
   
-  banco:
+  db_club:
     build: ./sql/
     ports: 
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: senha_da_nasa
-      MYSQL_DATABASE: lamp
-      MYSQL_USER: user_lamp
-      MYSQL_PASSWORD: lamp_pass
+      MYSQL_DATABASE: club
+      MYSQL_USER: client
+      MYSQL_PASSWORD: senha_da_nasa
     deploy:
       resources:
         limits:
           cpus: '1.0'
-          memory: 500MB
+          memory: 500M
     networks:
       mynet:
   
@@ -40,11 +40,11 @@ services:
     ports:
       - "8080:8080"
     links:
-      - banco:banco
+      - db_club:db_club
     deploy:
       resources:
         limits:
           cpus: '4.0'
-          memory: 200MB
+          memory: 200M
     networks:
       mynet:
